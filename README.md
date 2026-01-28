@@ -1,4 +1,3 @@
-# Sam Tam
 ## About Me
 I am a Computer Science student that is sleepy.
 Email: alex@example.com
