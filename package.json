@@ -1,0 +1,15 @@
+{
+  "name": "about-me",
+  "version": "1.0.0",
+  "description": "I am a Computer Science student that is sleepy. Email: alex@example.com",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^4.1.18"
+  }
+}
