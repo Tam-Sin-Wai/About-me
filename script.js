@@ -3,7 +3,9 @@ const mobileMenuButton = document.getElementById('mobile-menu-button');
 const mobileMenu = document.getElementById('mobile-menu');
 
 mobileMenuButton.addEventListener('click', () => {
+    const isExpanded = mobileMenu.classList.contains('hidden');
     mobileMenu.classList.toggle('hidden');
+    mobileMenuButton.setAttribute('aria-expanded', isExpanded);
     const icon = mobileMenuButton.querySelector('span');
     if (mobileMenu.classList.contains('hidden')) {
         icon.textContent = '☰';
@@ -17,6 +19,7 @@ const mobileMenuLinks = mobileMenu.querySelectorAll('a');
 mobileMenuLinks.forEach(link => {
     link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
         const icon = mobileMenuButton.querySelector('span');
         icon.textContent = '☰';
     });
@@ -39,7 +42,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Navbar Scroll Effect
 const navbar = document.getElementById('navbar');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
@@ -51,14 +53,8 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('scrolled');
     }
     
-    lastScroll = currentScroll;
-});
-
-// Scroll to Top Button
-const scrollTopButton = document.getElementById('scroll-top');
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
+    // Scroll to top button visibility
+    if (currentScroll > 300) {
         scrollTopButton.classList.remove('opacity-0', 'pointer-events-none');
         scrollTopButton.classList.add('opacity-100');
     } else {
@@ -66,6 +62,8 @@ window.addEventListener('scroll', () => {
         scrollTopButton.classList.remove('opacity-100');
     }
 });
+
+const scrollTopButton = document.getElementById('scroll-top');
 
 scrollTopButton.addEventListener('click', () => {
     window.scrollTo({
@@ -89,11 +87,14 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all sections
+// Observe all sections (respecting user motion preferences)
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(20px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    if (!prefersReducedMotion) {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    }
     observer.observe(section);
 });
 
@@ -120,22 +121,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Add typing effect to the hero title (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
 // Skill Progress Bar Animation
 const skillBars = document.querySelectorAll('.skill-item .bg-gradient-to-r');
 const skillObserver = new IntersectionObserver((entries) => {
@@ -154,22 +139,6 @@ const skillObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 skillBars.forEach(bar => skillObserver.observe(bar));
-
-// Handle external links
-document.querySelectorAll('a[target="_blank"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-        // Add analytics or tracking here if needed
-        console.log('External link clicked:', link.href);
-    });
-});
-
-// Prevent default scroll behavior on page load
-window.addEventListener('load', () => {
-    // Scroll to top on page load
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-    }, 10);
-});
 
 // Console Easter Egg
 console.log('%c👋 Hello, fellow developer!', 'color: #3b82f6; font-size: 20px; font-weight: bold;');
