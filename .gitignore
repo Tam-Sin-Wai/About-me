@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build tools
+tailwindcss-linux-x64
+
+# Source files (keep only built CSS)
+input.css
+tailwind.config.js
+
+# Package manager files (optional - keeping for reproducibility)
+# package.json
+# package-lock.json
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
